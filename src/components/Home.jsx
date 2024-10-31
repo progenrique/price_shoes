@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 const Home = () => {
   const [data, setData] = useState(null);
 
-  /* useEffect(() => {
+  useEffect(() => {
     const axiosData = async () => {
       try {
         let res = await axios("https://api-price-shoes.vercel.app/productos"),
@@ -18,7 +18,7 @@ const Home = () => {
     };
 
     axiosData();
-  }, []); */
+  }, []);
 
   return <div>Home</div>;
 };
