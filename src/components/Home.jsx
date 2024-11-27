@@ -1,26 +1,25 @@
 import React from "react";
-import axios from "axios";
+import Card from "./Card";
 import { useEffect, useState } from "react";
+import { axiosData } from "../helpers/axiosData.js";
 
-const Home = () => {
-  const [data, setData] = useState(null);
+const Home = (props) => {
+  const [dataHome, setDataHome] = useState([]);
 
   useEffect(() => {
-    const axiosData = async () => {
-      try {
-        let res = await axios("https://api-price-shoes.vercel.app/productos"),
-          json = await res.data;
-
-        console.log(json);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    axiosData();
+    //recibe la peticion y la url
+    const axiosAsync = async () =>
+      setDataHome(await axiosData("http://localhost:3001", "get"));
+    axiosAsync();
   }, []);
 
-  return <div>Home</div>;
+  return (
+    <>
+      {dataHome.map((el, index) => (
+        <Card key={index} data={el} home={true} />
+      ))}
+    </>
+  );
 };
 
 export default Home;

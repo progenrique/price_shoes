@@ -25,14 +25,20 @@ const Header = () => {
               <a
                 className="nav-link active"
                 aria-current="page"
-                href="#"
+                href="/"
                 style={{ color: "#DB0080" }}>
                 Home
               </a>
-              <a className="nav-link" href="#" style={{ color: "#DB0080" }}>
+              <a
+                className="nav-link"
+                href="/clientes"
+                style={{ color: "#DB0080" }}>
                 Clientes
               </a>
-              <a className="nav-link" href="#" style={{ color: "#DB0080" }}>
+              <a
+                className="nav-link"
+                href="productos"
+                style={{ color: "#DB0080" }}>
                 Productos
               </a>
             </div>
