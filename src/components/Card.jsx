@@ -5,7 +5,6 @@ import TablaDetails from "./TablaDetails";
 const Card = (props) => {
   const { data, home, details } = props;
   const { name, pedidos, cliente_id } = data;
-  console.log(pedidos);
   return (
     <>
       <div
@@ -24,7 +23,7 @@ const Card = (props) => {
               {pedidos.map((pedido, index) => (
                 <TablaPedidos key={index} data={pedido} />
               ))}
-              <a href={`/clientes/${cliente_id}`} className="card-link">
+              <a href={`/detalles/${cliente_id}`} className="card-link">
                 Detalles
               </a>
             </>

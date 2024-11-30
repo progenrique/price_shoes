@@ -14,7 +14,6 @@ const Productos = () => {
     axiosAsync();
   }, []);
 
-  console.log(dataProductos);
   return (
     <table className="table table-striped table-hover container">
       <thead style={{ margin: "auto" }}>

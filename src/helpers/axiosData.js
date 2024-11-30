@@ -12,9 +12,9 @@ export const axiosData = async (url, peticion = "get", data = false) => {
     if (data) options.data = data;
 
     let res = await axios(url, options),
-      json = await res.data;
+      json = res.data;
     return json;
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data);
   }
 };

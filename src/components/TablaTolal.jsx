@@ -1,7 +1,6 @@
 import React from "react";
 
 const TablaTolal = (props) => {
-  console.log(props.data);
   const { precio_cliente, precio_lista, abonado } = props.data;
   return (
     <div style={{ marginTop: "2rem" }}>

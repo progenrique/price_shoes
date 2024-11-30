@@ -13,13 +13,15 @@ import {
 import Details from "./components/Details";
 import Productos from "./components/Productos";
 
+import FromularioClientes from "./components/FromularioClientes";
+
 const App = () => {
   return (
     <BrowserRouter>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/clientes/:id" element={<Details />} />
+        <Route path="/detalles/:id" element={<Details />} />
         <Route path="/clientes" element={<Clientes />} />
         <Route path="/productos" element={<Productos />} />
       </Routes>
