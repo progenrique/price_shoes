@@ -1,9 +1,12 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { axiosData } from "../helpers/axiosData.js";
+import TablaProductos from "./TablaProductos.jsx";
+import FormProductos from "./FormProductos.jsx";
 
 const Productos = () => {
   const [dataProductos, setDataProductos] = useState([]);
+  const [showForm, setShowForm] = useState(true);
 
   useEffect(() => {
     //recibe la peticion y la url
@@ -14,37 +17,21 @@ const Productos = () => {
     axiosAsync();
   }, []);
 
+  const addProducto = () => {
+    console.log("add producto");
+  };
   return (
-    <table className="table table-striped table-hover container">
-      <thead style={{ margin: "auto" }}>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Id</th>
-          <th scope="col">Precio Publico</th>
-          <th scope="col">Precio Lista</th>
-          <th scope="col">Marca</th>
-          <th scope="col">Color</th>
-          <th scope="col">Tipo</th>
-          <th scope="col">Piso</th>
-          <th scope="col">Pasillo</th>
-        </tr>
-      </thead>
-      <tbody>
-        {dataProductos.map((producto, index) => (
-          <tr key={index}>
-            <th scope="row">{index}</th>
-            <td>{producto.id_price}</td>
-            <td>{producto.precio_cliente}</td>
-            <td>{producto.precio_lista}</td>
-            <td>{producto.marca}</td>
-            <td>{producto.color}</td>
-            <td>{producto.tipo}</td>
-            <td>{producto.piso}</td>
-            <td>{producto.pasillo}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <>
+      {!showForm && (
+        <FormProductos showForm={showForm} setShowForm={setShowForm} />
+      )}
+      <TablaProductos
+        setShowForm={setShowForm}
+        dataProductos={dataProductos}
+        showForm={showForm}
+      />
+      ;
+    </>
   );
 };
 

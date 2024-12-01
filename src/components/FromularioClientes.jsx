@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "./Button";
+import { validacionCliente } from "../helpers/schemas/price_eschema";
 
 const FromularioClientes = (props) => {
   const {
@@ -28,12 +29,19 @@ const FromularioClientes = (props) => {
     name !== null && setDataName({ name });
   }, [name]);
 
-  const handleKeyUp = (e) => {
+  /* const handleKeyUp = (e) => {
     const regex = /^[a-zA-Z]+$/; // Solo letras
     const data = { name: e.target.value };
-    validateName(e.target.value);
+    
     setDataName(data);
     setIsValid(regex.test(data.name));
+  }; */
+  const handleKeyUp = (e) => {
+    const data = { name: e.target.value };
+    const validacion = validacionCliente(data);
+    setIsValid(validacion.success);
+    validateName(e.target.value); // verificar en la bd que no exista el nombre
+    setDataName(data);
   };
 
   const handleClick = (e) => {
@@ -42,6 +50,7 @@ const FromularioClientes = (props) => {
       setShowForm((prev) => !prev);
     }
     if (e.currentTarget.dataset.type === "add") postCliente(dataName);
+
     if (e.currentTarget.dataset.type === "edit") patchClientes(dataName);
   };
   return (
@@ -61,14 +70,15 @@ const FromularioClientes = (props) => {
         <input
           type="text"
           className="form-control"
-          placeholder="Leave a comment here"
           value={dataName.name}
           id="floatingTextarea"
           onChange={handleKeyUp}></input>
         <label htmlFor="floatingTextarea">Nombre</label>
 
         {!isValid && (
-          <p style={{ color: "red" }}>el campo nombre solo recibe letras</p>
+          <p style={{ color: "red" }}>
+            el campo no puede ir vacio solo recibe letras
+          </p>
         )}
         {nameExists && (
           <p style={{ color: "red" }}>
@@ -87,15 +97,19 @@ const FromularioClientes = (props) => {
         )}
 
         <div className="d-grid gap-2">
-          {name !== null ? (
-            <Button type={"edit"} handleClick={handleClick}>
-              Modificar
-            </Button>
-          ) : (
-            <Button type={"add"} handleClick={handleClick}>
-              Añadir
-            </Button>
-          )}
+          {name !== null
+            ? isValid === true &&
+              nameExists === false && (
+                <Button type={"edit"} handleClick={handleClick}>
+                  Modificar
+                </Button>
+              )
+            : isValid === true &&
+              nameExists === false && (
+                <Button type={"add"} handleClick={handleClick}>
+                  Añadir
+                </Button>
+              )}
         </div>
       </form>
     </>

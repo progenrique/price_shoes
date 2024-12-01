@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "./Button";
 
 const TablaClientes = (props) => {
   const { data, setShowForm, showForm, deleteClientes } = props;
@@ -10,6 +11,8 @@ const TablaClientes = (props) => {
     const type = e.target.dataset.type;
     const id = e.target.dataset.id;
     const name = e.target.dataset.name;
+
+    console.log(e.target);
 
     if (type === "showForm") setShowForm((prev) => !prev);
     if (type === "edit") {
@@ -23,13 +26,9 @@ const TablaClientes = (props) => {
   return (
     <div className="container">
       {showForm && (
-        <button
-          data-type="showForm"
-          onClick={handleClick}
-          type="button"
-          className="btn btn-info">
+        <Button type={"showForm"} handleClick={handleClick}>
           Add Cliente
-        </button>
+        </Button>
       )}
       <table className="table table-striped table-hover ">
         <thead>

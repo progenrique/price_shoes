@@ -2,6 +2,7 @@ import React from "react";
 
 const Button = (props) => {
   const { children, handleClick, type } = props;
+
   return (
     <button
       onClick={handleClick}
