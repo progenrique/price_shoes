@@ -166,14 +166,14 @@ const productoSchema = z.object({
     .positive({ message: "debe ser numero positivo" }),
   marca: z
     .string({
-      invalid_type_error: "la marca debe de ser una cadena de texto",
+      invalid_type_error: "solo acepta letras",
     })
     .min(3, { message: "Debe tener al menos 3 caracteres" })
     .max(100, { message: "No puede exceder de 100 caracteres" })
     .optional(),
   piso: z
     .string({
-      invalid_type_error: "la marca debe de ser una cadena de texto",
+      invalid_type_error: "solo acepta letras",
     })
     .min(1, { message: "Debe tener al menos 1 caracteres" })
     .max(100, { message: "No puede exceder de 100 caracteres" })
@@ -187,14 +187,14 @@ const productoSchema = z.object({
     .optional(),
   color: z
     .string({
-      invalid_type_error: "la marca debe de ser una cadena de texto",
+      invalid_type_error: "solo acepta letras",
     })
     .min(3, { message: "Debe tener al menos 3 caracteres" })
     .max(100, { message: "No puede exceder de 100 caracteres" })
     .optional(),
   tipo: z
     .string({
-      invalid_type_error: "la marca debe de ser una cadena de texto",
+      invalid_type_error: "solo acepta letras",
     })
     .min(3, { message: "Debe tener al menos 3 caracteres" })
     .max(100, { message: "No puede exceder de 100 caracteres" })
@@ -252,6 +252,23 @@ const updatePedidoSchema = z.object({
     }),
 });
 
+const schemaNumber = z
+  .number({
+    message: "el valor debe ser numero entero",
+    invalid_type_error: "El valor debe ser un número",
+  })
+  .positive({ message: "debe ser numero positivo" });
+
+const schemaText = z
+  .string({
+    invalid_type_error: "solo acepta letras",
+  })
+  .min(1, { message: "Debe tener al menos 3 caracteres" })
+  .max(100, { message: "No puede exceder de 100 caracteres" });
+
+export const validacionNumber = (num) => schemaNumber.safeParse(num);
+export const validacionText = (string) => schemaText.safeParse(string);
+
 export const validacionCliente = (obj) => clienteSchema.safeParse(obj);
 export const validacionPedido = (obj) => pedidoSchema.safeParse(obj);
 export const validacionPago = (obj) => pagoSchema.safeParse(obj);
@@ -259,7 +276,7 @@ export const validacionProducto = (obj) => productoSchema.safeParse(obj);
 
 export const validacionUpdateCliente = (obj) =>
   updateclienteSchema.safeParse(obj);
-export const validacionUpdateProducto = (obj) =>
+export const validacionPartialProducto = (obj) =>
   productoSchema.partial().safeParse(obj);
 export const validacionUpdatePedido = (obj) =>
   updatePedidoSchema.partial().safeParse(obj);

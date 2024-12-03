@@ -23,7 +23,11 @@ const Productos = () => {
   return (
     <>
       {!showForm && (
-        <FormProductos showForm={showForm} setShowForm={setShowForm} />
+        <FormProductos
+          showForm={showForm}
+          setShowForm={setShowForm}
+          addProducto={addProducto}
+        />
       )}
       <TablaProductos
         setShowForm={setShowForm}

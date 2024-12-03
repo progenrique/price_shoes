@@ -1,29 +1,93 @@
 import React from "react";
 import Button from "./Button";
 import { useState } from "react";
+import {
+  validacionNumber,
+  validacionText,
+} from "../helpers/schemas/price_eschema";
 
 const FormProductos = (props) => {
-  const { showForm, setShowForm } = props;
+  const { showForm, setShowForm, addProducto } = props;
+
+  const objValidations = {
+    id_price: true,
+    precio_cliente: true,
+    precio_lista: true,
+    pasillo: true,
+    marca: true,
+    color: true,
+    tipo: true,
+    piso: true,
+  };
 
   const [dataProductos, setDataProductos] = useState({});
+  const [messageValidation, setMessageValidation] = useState(objValidations);
+  const [showButton, setShowButton] = useState(true);
 
   const handleClick = (e) => {
     if (e.currentTarget.dataset.type === "close") setShowForm((prev) => !prev);
     if (e.currentTarget.dataset.type === "add") {
       console.log(dataProductos);
+      addProducto();
     }
   };
 
   const onChange = (e) => {
     let key = e.target.name;
     let value = e.target.value;
+    let name = e.target.name;
+
+    if (
+      name === "id_price" ||
+      name === "precio_cliente" ||
+      name === "precio_lista" ||
+      name === "pasillo"
+    ) {
+      let number = isNaN(value) ? value : Number(value);
+      const validacion = validacionNumber(number);
+
+      if (validacion.success === false) {
+        setMessageValidation((prevData) => ({
+          ...prevData,
+          [name]: false,
+        }));
+        setShowButton(false);
+      } else {
+        setMessageValidation((prevData) => ({
+          ...prevData,
+          [name]: true,
+        }));
+        setShowButton(true);
+      }
+    }
+
+    if (
+      name === "marca" ||
+      name === "color" ||
+      name === "piso" ||
+      name === "tipo"
+    ) {
+      const validacion = validacionText(value);
+
+      if (validacion.success === false) {
+        setMessageValidation((prevData) => ({
+          ...prevData,
+          [name]: false,
+        }));
+        setShowButton(false);
+      } else {
+        setMessageValidation((prevData) => ({
+          ...prevData,
+          [name]: true,
+        }));
+        setShowButton(true);
+      }
+    }
 
     setDataProductos((prevData) => ({
       ...prevData,
       [key]: value,
     }));
-
-    console.log(dataProductos);
   };
 
   return (
@@ -35,7 +99,6 @@ const FormProductos = (props) => {
           </Button>
         </div>
       )}
-
       <form
         style={{
           display: "flex",
@@ -52,6 +115,10 @@ const FormProductos = (props) => {
             id="floatingTextarea"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea">Id Price</label>
+
+          {!messageValidation.id_price && (
+            <small style={{ color: "red" }}>Solo se permiten numeros</small>
+          )}
         </div>
         <div className="form-floating input">
           <input
@@ -62,6 +129,9 @@ const FormProductos = (props) => {
             id="floatingTextarea1"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea1">Precio Publico</label>
+          {!messageValidation.precio_cliente && (
+            <small style={{ color: "red" }}>Solo se permiten numeros</small>
+          )}
         </div>
         <div className="form-floating input">
           <input
@@ -72,6 +142,9 @@ const FormProductos = (props) => {
             id="floatingTextarea2"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea2">Precio Lista</label>
+          {!messageValidation.precio_lista && (
+            <small style={{ color: "red" }}>Solo se permiten numeros</small>
+          )}
         </div>
         <div className="form-floating input">
           <input
@@ -82,6 +155,10 @@ const FormProductos = (props) => {
             id="floatingTextarea3"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea3">Marca</label>
+
+          {!messageValidation.marca && (
+            <small style={{ color: "red" }}>Solo se permiten letras</small>
+          )}
         </div>
         <div className="form-floating input">
           <input
@@ -92,6 +169,9 @@ const FormProductos = (props) => {
             id="floatingTextarea4"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea4">Color</label>
+          {!messageValidation.color && (
+            <small style={{ color: "red" }}>Solo se permiten letras</small>
+          )}
         </div>
         <div className="form-floating input">
           <input
@@ -102,6 +182,9 @@ const FormProductos = (props) => {
             id="floatingTextarea5"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea5">Tipo</label>
+          {!messageValidation.tipo && (
+            <small style={{ color: "red" }}>Solo se permiten letras</small>
+          )}
         </div>
         <div className="form-floating input">
           <input
@@ -112,6 +195,9 @@ const FormProductos = (props) => {
             id="floatingTextarea6"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea6">Piso</label>
+          {!messageValidation.piso && (
+            <small style={{ color: "red" }}>Solo se permiten letras</small>
+          )}
         </div>
         <div className="form-floating input">
           <input
@@ -122,11 +208,16 @@ const FormProductos = (props) => {
             id="floatingTextarea7"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea">Pasillo</label>
+          {!messageValidation.pasillo && (
+            <small style={{ color: "red" }}>Solo se permiten numeros</small>
+          )}
         </div>
       </form>
-      <Button type={"add"} handleClick={handleClick}>
-        Añadir
-      </Button>
+      {showButton && (
+        <Button type={"add"} handleClick={handleClick}>
+          Añadir
+        </Button>
+      )}
     </div>
   );
 };
