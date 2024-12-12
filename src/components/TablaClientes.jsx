@@ -12,8 +12,6 @@ const TablaClientes = (props) => {
     const id = e.target.dataset.id;
     const name = e.target.dataset.name;
 
-    console.log(e.target);
-
     if (type === "showForm") setShowForm((prev) => !prev);
     if (type === "edit") {
       navigate(`/clientes?name=${name}&id=${id}`);
@@ -21,6 +19,9 @@ const TablaClientes = (props) => {
     }
 
     if (type === "delete") deleteClientes(id, name);
+    if (type === "addPedido") {
+      navigate(`/clientes/id/pedido`);
+    }
   };
 
   return (
@@ -37,6 +38,7 @@ const TablaClientes = (props) => {
             <th scope="col">Nombre</th>
             <th scope="col">Editar</th>
             <th scope="col">Eliminar</th>
+            <th scope="col">Add Pedido</th>
           </tr>
         </thead>
         <tbody>
@@ -65,6 +67,16 @@ const TablaClientes = (props) => {
                   cursor: "pointer",
                 }}>
                 Eliminar
+              </td>
+              <td
+                data-type="addPedido"
+                data-id={cliente.id}
+                onClick={handleClick}
+                style={{
+                  color: "grey",
+                  cursor: "pointer",
+                }}>
+                Add
               </td>
             </tr>
           ))}

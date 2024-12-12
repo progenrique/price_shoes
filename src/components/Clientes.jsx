@@ -94,8 +94,12 @@ const Clientes = () => {
           setAdded(true);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const postPedidos = async () => {};
   return (
     <div className="container">
       {!showForm && (
@@ -115,6 +119,7 @@ const Clientes = () => {
         setShowForm={setShowForm}
         showForm={showForm}
         deleteClientes={deleteClientes}
+        postPedidos={postPedidos}
       />
     </div>
   );

@@ -169,46 +169,31 @@ const productoSchema = z.object({
       invalid_type_error: "solo acepta letras",
     })
     .min(3, { message: "Debe tener al menos 3 caracteres" })
-    .max(100, { message: "No puede exceder de 100 caracteres" })
-    .optional(),
+    .max(100, { message: "No puede exceder de 100 caracteres" }),
   piso: z
     .string({
       invalid_type_error: "solo acepta letras",
     })
     .min(1, { message: "Debe tener al menos 1 caracteres" })
-    .max(100, { message: "No puede exceder de 100 caracteres" })
-    .optional(),
+    .max(100, { message: "No puede exceder de 100 caracteres" }),
   pasillo: z
     .number({
       message: "el debe ser entero",
       invalid_type_error: "El valor debe ser un número",
     })
-    .positive({ message: "debe ser numero positivo" })
-    .optional(),
+    .positive({ message: "debe ser numero positivo" }),
   color: z
     .string({
       invalid_type_error: "solo acepta letras",
     })
     .min(3, { message: "Debe tener al menos 3 caracteres" })
-    .max(100, { message: "No puede exceder de 100 caracteres" })
-    .optional(),
+    .max(100, { message: "No puede exceder de 100 caracteres" }),
   tipo: z
     .string({
       invalid_type_error: "solo acepta letras",
     })
     .min(3, { message: "Debe tener al menos 3 caracteres" })
-    .max(100, { message: "No puede exceder de 100 caracteres" })
-    .optional(),
-  talla: z
-    .number()
-    .min(1, { message: "el numero debe ser igual o mayor a 1" })
-    .max(40, { message: "el numero debe ser igual o menor a 40" })
-    .optional(),
-  cantidad: z
-    .number()
-    .min(1, { message: "el numero debe ser igual o mayor a 1" })
-    .max(100, { message: "el numero debe ser igual o menor a 100" })
-    .optional(),
+    .max(100, { message: "No puede exceder de 100 caracteres" }),
 });
 
 const updatePedidoSchema = z.object({

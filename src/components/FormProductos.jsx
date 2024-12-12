@@ -4,10 +4,12 @@ import { useState } from "react";
 import {
   validacionNumber,
   validacionText,
+  validacionProducto,
 } from "../helpers/schemas/price_eschema";
 
 const FormProductos = (props) => {
-  const { showForm, setShowForm, addProducto } = props;
+  const { showForm, setShowForm, addProducto, valueInputs, setValueInputs } =
+    props;
 
   const objValidations = {
     id_price: true,
@@ -20,21 +22,49 @@ const FormProductos = (props) => {
     piso: true,
   };
 
-  const [dataProductos, setDataProductos] = useState({});
   const [messageValidation, setMessageValidation] = useState(objValidations);
-  const [showButton, setShowButton] = useState(true);
+
+  // para manejar los mensajes de error de los inputs
+  //recibe el nombre y el reaultado de la validacion del input
+  const messageValidacion = (name, validacion) => {
+    if (validacion.success === false) {
+      setMessageValidation((prevData) => ({
+        ...prevData,
+        [name]: false,
+      }));
+    } else {
+      setMessageValidation((prevData) => ({
+        ...prevData,
+        [name]: true,
+      }));
+    }
+  };
 
   const handleClick = (e) => {
-    if (e.currentTarget.dataset.type === "close") setShowForm((prev) => !prev);
+    if (e.currentTarget.dataset.type === "close") {
+      setValueInputs({});
+      setShowForm((prev) => !prev);
+    }
     if (e.currentTarget.dataset.type === "add") {
-      console.log(dataProductos);
-      addProducto();
+      const validacion = validacionProducto(valueInputs);
+      if (validacion.success === false) {
+        validacion.error.issues.forEach((el) => {
+          let name = el.path[0];
+          setMessageValidation((prevData) => ({
+            ...prevData,
+            [name]: false,
+          }));
+        });
+      } else {
+        addProducto(valueInputs);
+        setValueInputs({});
+      }
     }
   };
 
   const onChange = (e) => {
     let key = e.target.name;
-    let value = e.target.value;
+    let value = isNaN(e.target.value) ? e.target.value : Number(e.target.value);
     let name = e.target.name;
 
     if (
@@ -43,51 +73,29 @@ const FormProductos = (props) => {
       name === "precio_lista" ||
       name === "pasillo"
     ) {
-      let number = isNaN(value) ? value : Number(value);
-      const validacion = validacionNumber(number);
-
-      if (validacion.success === false) {
-        setMessageValidation((prevData) => ({
-          ...prevData,
-          [name]: false,
-        }));
-        setShowButton(false);
-      } else {
-        setMessageValidation((prevData) => ({
-          ...prevData,
-          [name]: true,
-        }));
-        setShowButton(true);
-      }
+      const validacion = validacionNumber(value);
+      messageValidacion(name, validacion);
     }
 
-    if (
-      name === "marca" ||
-      name === "color" ||
-      name === "piso" ||
-      name === "tipo"
-    ) {
+    if (name === "marca" || name === "color" || name === "tipo") {
       const validacion = validacionText(value);
-
-      if (validacion.success === false) {
-        setMessageValidation((prevData) => ({
-          ...prevData,
-          [name]: false,
-        }));
-        setShowButton(false);
-      } else {
-        setMessageValidation((prevData) => ({
-          ...prevData,
-          [name]: true,
-        }));
-        setShowButton(true);
-      }
+      messageValidacion(name, validacion);
+    }
+    //esta validacion se hace porque el campo piso puede aceptar letras y numero pero solo string
+    if (name === "piso") {
+      const validacion = validacionText(e.target.value);
+      messageValidacion(name, validacion);
     }
 
-    setDataProductos((prevData) => ({
-      ...prevData,
-      [key]: value,
-    }));
+    name === "piso"
+      ? setValueInputs((prevData) => ({
+          ...prevData,
+          [key]: e.target.value,
+        }))
+      : setValueInputs((prevData) => ({
+          ...prevData,
+          [key]: value,
+        }));
   };
 
   return (
@@ -111,7 +119,7 @@ const FormProductos = (props) => {
             type="text"
             name="id_price"
             className="form-control "
-            value={dataProductos.id_price || ""}
+            value={valueInputs.id_price || ""}
             id="floatingTextarea"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea">Id Price</label>
@@ -125,7 +133,7 @@ const FormProductos = (props) => {
             type="text"
             name="precio_cliente"
             className="form-control "
-            /* value={} */
+            value={valueInputs.precio_cliente || ""}
             id="floatingTextarea1"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea1">Precio Publico</label>
@@ -138,7 +146,7 @@ const FormProductos = (props) => {
             type="text"
             name="precio_lista"
             className="form-control "
-            /* value={} */
+            value={valueInputs.precio_lista || ""}
             id="floatingTextarea2"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea2">Precio Lista</label>
@@ -151,7 +159,7 @@ const FormProductos = (props) => {
             type="text"
             name="marca"
             className="form-control "
-            /* value={} */
+            value={valueInputs.marca || ""}
             id="floatingTextarea3"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea3">Marca</label>
@@ -165,7 +173,7 @@ const FormProductos = (props) => {
             type="text"
             name="color"
             className="form-control "
-            /* value={} */
+            value={valueInputs.color || ""}
             id="floatingTextarea4"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea4">Color</label>
@@ -178,7 +186,7 @@ const FormProductos = (props) => {
             type="text"
             name="tipo"
             className="form-control "
-            /* value={} */
+            value={valueInputs.tipo || ""}
             id="floatingTextarea5"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea5">Tipo</label>
@@ -191,7 +199,7 @@ const FormProductos = (props) => {
             type="text"
             name="piso"
             className="form-control "
-            /* value={} */
+            value={valueInputs.piso || ""}
             id="floatingTextarea6"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea6">Piso</label>
@@ -204,7 +212,7 @@ const FormProductos = (props) => {
             type="text"
             name="pasillo"
             className="form-control "
-            /* value={} */
+            value={valueInputs.pasillo || ""}
             id="floatingTextarea7"
             onChange={onChange}></input>
           <label htmlFor="floatingTextarea">Pasillo</label>
@@ -213,7 +221,11 @@ const FormProductos = (props) => {
           )}
         </div>
       </form>
-      {showButton && (
+      {Object.keys(valueInputs).length > 0 ? (
+        <Button type={"edit"} handleClick={handleClick}>
+          Actualizar
+        </Button>
+      ) : (
         <Button type={"add"} handleClick={handleClick}>
           Añadir
         </Button>

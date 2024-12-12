@@ -29,13 +29,6 @@ const FromularioClientes = (props) => {
     name !== null && setDataName({ name });
   }, [name]);
 
-  /* const handleKeyUp = (e) => {
-    const regex = /^[a-zA-Z]+$/; // Solo letras
-    const data = { name: e.target.value };
-    
-    setDataName(data);
-    setIsValid(regex.test(data.name));
-  }; */
   const handleKeyUp = (e) => {
     const data = { name: e.target.value };
     const validacion = validacionCliente(data);

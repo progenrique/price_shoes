@@ -13,7 +13,7 @@ import {
 import Details from "./components/Details";
 import Productos from "./components/Productos";
 
-import FromularioClientes from "./components/FromularioClientes";
+import Pedidos from "./components/Pedidos";
 
 const App = () => {
   return (
@@ -24,6 +24,7 @@ const App = () => {
         <Route path="/detalles/:id" element={<Details />} />
         <Route path="/clientes" element={<Clientes />} />
         <Route path="/productos" element={<Productos />} />
+        <Route path="/clientes/:id/pedido" element={<Pedidos />} />
       </Routes>
     </BrowserRouter>
   );

@@ -7,6 +7,8 @@ import FormProductos from "./FormProductos.jsx";
 const Productos = () => {
   const [dataProductos, setDataProductos] = useState([]);
   const [showForm, setShowForm] = useState(true);
+  const [reloadProducts, setReloadProducts] = useState(true);
+  const [valueInputs, setValueInputs] = useState({});
 
   useEffect(() => {
     //recibe la peticion y la url
@@ -15,11 +17,25 @@ const Productos = () => {
         await axiosData("http://localhost:3001/productos", "get")
       );
     axiosAsync();
-  }, []);
+  }, [reloadProducts]);
 
-  const addProducto = () => {
-    console.log("add producto");
+  const addProducto = async (data) => {
+    const result = await axiosData(
+      "http://localhost:3001/productos",
+      "POST",
+      data
+    );
+
+    if (result.success === true) {
+      setReloadProducts((prev) => !prev);
+      setShowForm((prev) => !prev);
+    }
   };
+
+  const editProductos = async (producto) => {
+    setValueInputs(producto);
+  };
+
   return (
     <>
       {!showForm && (
@@ -27,12 +43,15 @@ const Productos = () => {
           showForm={showForm}
           setShowForm={setShowForm}
           addProducto={addProducto}
+          valueInputs={valueInputs}
+          setValueInputs={setValueInputs}
         />
       )}
       <TablaProductos
         setShowForm={setShowForm}
         dataProductos={dataProductos}
         showForm={showForm}
+        editProductos={editProductos}
       />
       ;
     </>

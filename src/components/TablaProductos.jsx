@@ -2,11 +2,21 @@ import React from "react";
 import Button from "./Button";
 
 const TablaProductos = (props) => {
-  const { dataProductos, setShowForm, showForm } = props;
+  const {
+    dataProductos,
+    setShowForm,
+    showForm,
+    editProductos,
+    deleteProductos,
+  } = props;
 
   const handleClick = (e) => {
     const type = e.target.dataset.type;
     if (type === "showForm") setShowForm((prev) => !prev);
+    if (type === "edit") {
+      setShowForm(false);
+      editProductos(JSON.parse(e.target.dataset.producto));
+    }
   };
   return (
     <div className="container">
@@ -27,6 +37,7 @@ const TablaProductos = (props) => {
             <th scope="col">Tipo</th>
             <th scope="col">Piso</th>
             <th scope="col">Pasillo</th>
+            <th scope="col">Editar</th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +52,16 @@ const TablaProductos = (props) => {
               <td>{producto.tipo}</td>
               <td>{producto.piso}</td>
               <td>{producto.pasillo}</td>
+              <td
+                data-type="edit"
+                data-producto={JSON.stringify(producto)}
+                onClick={handleClick}
+                style={{
+                  color: "grey",
+                  cursor: "pointer",
+                }}>
+                Editar
+              </td>
             </tr>
           ))}
         </tbody>
