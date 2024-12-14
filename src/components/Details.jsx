@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { axiosData } from "../helpers/axiosData.js";
 import Card from "./Card";
+import { ENDPOINTS } from "../helpers/urls.js";
 
 const Details = () => {
   const { id } = useParams();
@@ -11,14 +12,9 @@ const Details = () => {
   useEffect(() => {
     //recibe la peticion y la url
     const axiosAsync = async () => {
-      const [data] = await axiosData(
-        `http://localhost:3001/detalles/${id}`,
-        "get"
-      );
-
+      const [data] = await axiosData(`${ENDPOINTS.detalles}${id}`, "get");
       setDataDetails(data);
     };
-
     axiosAsync();
   }, []);
 

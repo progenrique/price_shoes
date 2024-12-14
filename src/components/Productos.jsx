@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { axiosData } from "../helpers/axiosData.js";
 import TablaProductos from "./TablaProductos.jsx";
 import FormProductos from "./FormProductos.jsx";
+import { ENDPOINTS } from "../helpers/urls.js";
 
 const Productos = () => {
   const [dataProductos, setDataProductos] = useState([]);
@@ -13,18 +14,12 @@ const Productos = () => {
   useEffect(() => {
     //recibe la peticion y la url
     const axiosAsync = async () =>
-      setDataProductos(
-        await axiosData("http://localhost:3001/productos", "get")
-      );
+      setDataProductos(await axiosData(ENDPOINTS.productos, "get"));
     axiosAsync();
   }, [reloadProducts]);
 
   const addProducto = async (data) => {
-    const result = await axiosData(
-      "http://localhost:3001/productos",
-      "POST",
-      data
-    );
+    const result = await axiosData(ENDPOINTS.productos, "POST", data);
 
     if (result.success === true) {
       setReloadProducts((prev) => !prev);

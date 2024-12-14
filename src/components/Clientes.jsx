@@ -4,6 +4,7 @@ import { axiosData } from "../helpers/axiosData.js";
 import TablaClientes from "./TablaClientes.jsx";
 import FormularioClientes from "./FromularioClientes.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ENDPOINTS } from "../helpers/urls.js";
 
 const Clientes = () => {
   const [dataClientes, setDataClientes] = useState([]);
@@ -15,12 +16,13 @@ const Clientes = () => {
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);
+  const navigate = useNavigate();
 
   //este useEfect realiza el get para mostrar los clientes
   useEffect(() => {
     //recibe la peticion y la url
     const axiosAsync = async () =>
-      setDataClientes(await axiosData("http://localhost:3001/clientes", "get"));
+      setDataClientes(await axiosData(ENDPOINTS.clientes, "get"));
     axiosAsync();
     if (added) setAdded(false);
   }, [added]);
@@ -36,11 +38,7 @@ const Clientes = () => {
   const postCliente = async (data) => {
     try {
       if (nameExists === false) {
-        const resultPost = await axiosData(
-          "http://localhost:3001/clientes",
-          "post",
-          data
-        );
+        const resultPost = await axiosData(ENDPOINTS.clientes, "post", data);
         if (resultPost.success === true) {
           setShowMessageAdd(true);
           setAdded(true); // es para actualizar la tabla
@@ -59,7 +57,7 @@ const Clientes = () => {
     try {
       const id = params.get("id");
       const resultPost = await axiosData(
-        `http://localhost:3001/clientes/${id}`,
+        `${ENDPOINTS.clientes}${id}`,
         "PATCH",
         name
       );
@@ -67,6 +65,7 @@ const Clientes = () => {
       if (resultPost.success === true) {
         setShowMessageEdit(true);
         setAdded(true);
+        navigate(`/clientes/`);
       }
 
       setTimeout(() => {
@@ -85,7 +84,7 @@ const Clientes = () => {
       );
       if (resultado) {
         const resultDelete = await axiosData(
-          `http://localhost:3001/clientes/${id}`,
+          `${ENDPOINTS.clientes}${id}`,
           "DELETE"
         );
 
@@ -99,7 +98,9 @@ const Clientes = () => {
     }
   };
 
-  const postPedidos = async () => {};
+  const postPedidos = async () => {
+    console.log("agregar pedido");
+  };
   return (
     <div className="container">
       {!showForm && (

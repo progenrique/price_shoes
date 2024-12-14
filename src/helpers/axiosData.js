@@ -15,6 +15,6 @@ export const axiosData = async (url, peticion = "get", data = false) => {
       json = res.data;
     return json;
   } catch (error) {
-    console.log(error.response.data);
+    console.log(error);
   }
 };
